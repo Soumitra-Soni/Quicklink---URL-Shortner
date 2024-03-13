@@ -60,8 +60,8 @@
   </body>
   <script type="text/javascript">
     let btn = document.getElementById("btn");
-
     let input_feild = document.getElementById("input-feild");
+    let result = document.getElementById("result");
 
     link_url = "/get_url";
 
@@ -88,18 +88,35 @@
       }
       const csrftoken = getCookie("csrftoken");
 
+      if (input_feild.value.trim() === "") {
+        alert("Please fill in the input field first");
+        return;
+      }
+
+      const data = {
+        new_input_feild: input_feild.value,
+      };
+
       fetch(link_url, {
-        methord: "POST",
+        method: "POST",
         headers: {
-          "Content-type": "application/json",
+          "Content-Type": "application/json",
           "X-CSRFToken": csrftoken,
         },
-
-        body: JSON.stringify({ new_input_feild: input_feild.value }),
+        body: JSON.stringify(data),
       })
-        .then((res) => res.json())
+        .then((res) => {
+          if (!res.ok) {
+            throw new Error("Network response was not ok");
+          }
+          return res.json();
+        })
         .then((data) => {
           console.log(data);
+          result.innerHTML = "http://quicklinkurls/" + data.uid;
+        })
+        .catch((error) => {
+          console.error("There was an error with the fetch operation:", error);
         });
     };
   </script>
