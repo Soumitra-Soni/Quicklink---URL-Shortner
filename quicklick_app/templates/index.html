@@ -113,7 +113,7 @@
         })
         .then((data) => {
           console.log(data);
-          result.innerHTML = "http://quicklinkurls/" + data.uid;
+          result.innerHTML = "http://127.0.0.1:8000/" + data.uid;
         })
         .catch((error) => {
           console.error("There was an error with the fetch operation:", error);
